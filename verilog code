@@ -1,0 +1,60 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date:    22:39:33 07/23/2023 
+// Design Name: 
+// Module Name:    traffic_light 
+// Project Name: 
+// Target Devices: 
+// Tool versions: 
+// Description: 
+//
+// Dependencies: 
+//
+// Revision: 
+// Revision 0.01 - File Created
+// Additional Comments: 
+//
+//////////////////////////////////////////////////////////////////////////////////
+module traffic_light( clock, light
+    );
+   input clock;
+   output reg [2:0] light; //tarffic light ka output is light
+   reg [1:0] state; // the states of the registers is always required so its also a register type
+    parameter s0 = 2'b01;
+    parameter s1 = 2'b10;
+    parameter s2 = 2'b11;
+    
+    parameter RED = 3'b100;
+    parameter GREEN = 3'b010;
+    parameter YELLOW = 3'b001;
+    
+    //modelling sequential circuit, therefore non blocking assignment, clock mila matlab state change karna hai
+    always @ (posedge clock)
+    begin
+    case(state)
+    s0: state<=s1;
+    s1: state<=s2;
+    s2: state<=s0;
+    default: state<=s0;
+    endcase
+    end
+    
+    // sequentiall modelling samapt, combinational prarambh
+    
+    // modelling combinational, therefore use blocking assignment
+    // this is traffic light, therefore output depends only on present state
+    
+   always@ (state)
+   begin
+   case(state)
+   s0: light = RED;
+   s1: light = GREEN;
+   s2: light = YELLOW;
+   default: light = RED;
+   endcase
+   end
+
+endmodule
