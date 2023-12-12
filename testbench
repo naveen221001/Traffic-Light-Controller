@@ -1,1 +1,49 @@
+   module tb;
+   reg X, clock, clear;
+   wire [1:0] hwy, cntry;
+
+   // Instantiate the TLC module
+   TLC uut (
+      .hwy(hwy),
+      .cntry(cntry),
+      .X(X),
+      .clock(clock),
+      .clear(clear)
+   );
+
+   // Dump variables for waveform
+   initial begin
+      $dumpfile("dump.vcd");
+      $dumpvars(0, uut);
+   end
+
+   // Clock generation
+   always begin
+      #5 clock = ~clock;
+   end
+
+   // Initialize inputs
+   initial begin
+      X = 0;
+      clock = 0;
+      clear = 0;
+
+      // Apply clear and wait for a few cycles
+      #10 clear = 1;
+
+      // Apply test sequence
+      #10 X = 1;
+      #20 X = 0;
+      #30 X = 1;
+      #40 X = 0;
+
+      // Add more test sequences as needed
+
+      // Finish simulation
+      #50 $finish;
+   end
+
+   // Rest of your testbench code here
+
+endmodule
 
